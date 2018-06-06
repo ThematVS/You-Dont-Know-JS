@@ -34,7 +34,7 @@ function bar() {
 foo();					// x: 3
 ```
 
-In this example, we know for sure that `bar()` runs in between `x++` and `console.log(x)`. But what if `bar()` wasn't there? Obviously the result would be `2` instead of `3`.
+In this example, we know for sure that `bar()` runs in between `x++` and `console.log(x)`. But what if `bar()` wasn't there? Obviously, the result would be `2` instead of `3`.
 
 Now let's twist your brain. What if `bar()` wasn't present, but it could still somehow run between the `x++` and `console.log(x)` statements? How would that be possible?
 
@@ -299,7 +299,7 @@ function *bar() {
 }
 ```
 
-Depending on what respective order the *iterators* controlling `*foo()` and `*bar()` are called, the preceding program could produce several different results. In other words, we can actually illustrate (in a sort of fake-ish way) the theoretical "threaded race conditions" circumstances discussed in Chapter 1, by interleaving the two generator interations over the same shared variables.
+Depending on what respective order the *iterators* controlling `*foo()` and `*bar()` are called, the preceding program could produce several different results. In other words, we can actually illustrate (in a sort of fake-ish way) the theoretical "threaded race conditions" circumstances discussed in Chapter 1, by interleaving the two generator iterations over the same shared variables.
 
 First, let's make a helper called `step(..)` that controls an *iterator*:
 
@@ -1168,12 +1168,12 @@ Hiding your Promise logic inside a function that you merely call from your gener
 
 ```js
 function bar() {
-	Promise.all( [
-		baz( .. )
-		.then( .. ),
-		Promise.race( [ .. ] )
-	] )
-	.then( .. )
+	return	Promise.all( [
+		  baz( .. )
+		  .then( .. ),
+		  Promise.race( [ .. ] )
+		] )
+		.then( .. )
 }
 ```
 
@@ -1566,8 +1566,8 @@ But how will we actually orchestrate this interaction? First, let's just do it m
 var it1 = reqData( "http://some.url.1" );
 var it2 = reqData( "http://some.url.2" );
 
-var p1 = it1.next();
-var p2 = it2.next();
+var p1 = it1.next().value;
+var p2 = it2.next().value;
 
 p1
 .then( function(data){
@@ -1600,8 +1600,8 @@ function *reqData(url) {
 var it1 = reqData( "http://some.url.1" );
 var it2 = reqData( "http://some.url.2" );
 
-var p1 = it1.next();
-var p2 = it2.next();
+var p1 = it1.next().value;
+var p2 = it2.next().value;
 
 p1.then( function(data){
 	it1.next( data );
